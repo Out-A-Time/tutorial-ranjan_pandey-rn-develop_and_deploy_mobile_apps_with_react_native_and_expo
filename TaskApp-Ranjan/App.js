@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  ScrollView,
+  FlatList,
+} from "react-native";
 
 export default function App() {
   const [task, setTask] = useState("");
@@ -13,7 +21,7 @@ export default function App() {
   function addNewTask() {
     console.log("hello1");
     setTaskList((currentTaskList) => {
-      return [...currentTaskList, task];
+      return [...currentTaskList, { text: task, id: Math.random().toString() }];
     });
   }
 
@@ -29,19 +37,36 @@ export default function App() {
           onPress={addNewTask}
           title="Add Task"
           style={styles.addTaskButton}
-        ></Button>
+        />
       </View>
       <View style={styles.taskListSection}>
         <Text style={styles.taskOverviewTitle}>Your tasks:</Text>
-        {taskList.map((singleTask, index) => {
-          return (
-            <View style={styles.taskItemStyleView}>
-              <Text key={index} style={styles.taskItemStyleText}>
-                {index} {singleTask}
-              </Text>
-            </View>
-          );
-        })}
+        <FlatList
+          data={taskList}
+          renderItem={({ item, index }) => {
+            return (
+              <View style={styles.taskItemStyleView}>
+                <Text style={styles.taskItemStyleText}>
+                  {index}: {item.text}
+                </Text>
+              </View>
+            );
+          }}
+          keyExtractor={(item, index) => {
+            return item.id;
+          }}
+        />
+        {/* <ScrollView>
+          {taskList.map((singleTask, index) => {
+            return (
+              <View key={index} style={styles.taskItemStyleView}>
+                <Text style={styles.taskItemStyleText}>
+                  {index} {singleTask}
+                </Text>
+              </View>
+            );
+          })}
+        </ScrollView> */}
       </View>
 
       {/* <StatusBar style="auto" /> */}
