@@ -1,75 +1,36 @@
 import { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  ScrollView,
-  FlatList,
-} from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
+import TaskItem from "./components/TaskItem";
+import AddTask from "./components/AddTask";
 
 export default function App() {
-  const [task, setTask] = useState("");
   const [taskList, setTaskList] = useState(["drink milk", "wash car"]);
 
-  function taskInputHandler(inputTask) {
-    setTask(inputTask);
-  }
-
-  function addNewTask() {
+  function addNewTask(newTask) {
     console.log("hello1");
     setTaskList((currentTaskList) => {
-      return [...currentTaskList, { text: task, id: Math.random().toString() }];
+      return [
+        ...currentTaskList,
+        { text: newTask, id: Math.random().toString() },
+      ];
     });
   }
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          onChangeText={taskInputHandler}
-          placeholder="Enter task details"
-          style={styles.inputBox}
-        />
-        <Button
-          onPress={addNewTask}
-          title="Add Task"
-          style={styles.addTaskButton}
-        />
-      </View>
+      <AddTask addNewTask={addNewTask} />
       <View style={styles.taskListSection}>
         <Text style={styles.taskOverviewTitle}>Your tasks:</Text>
         <FlatList
           data={taskList}
           renderItem={({ item, index }) => {
-            return (
-              <View style={styles.taskItemStyleView}>
-                <Text style={styles.taskItemStyleText}>
-                  {index}: {item.text}
-                </Text>
-              </View>
-            );
+            return <TaskItem item={item} index={index} key={item.id} />;
           }}
           keyExtractor={(item, index) => {
             return item.id;
           }}
         />
-        {/* <ScrollView>
-          {taskList.map((singleTask, index) => {
-            return (
-              <View key={index} style={styles.taskItemStyleView}>
-                <Text style={styles.taskItemStyleText}>
-                  {index} {singleTask}
-                </Text>
-              </View>
-            );
-          })}
-        </ScrollView> */}
       </View>
-
-      {/* <StatusBar style="auto" /> */}
     </View>
   );
 }
@@ -82,50 +43,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     backgroundColor: "grey",
   },
-  inputContainer: {
-    flex: 0,
-    paddingBottom: 35,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 25,
-    borderBottomWidth: 1,
-    borderBottomColor: "red",
-    backgroundColor: "skyblue",
-  },
-  inputBox: {
-    width: "75%",
-    borderWidth: 1,
-    borderColor: "red",
-    padding: 5,
-    marginRight: 5,
-    backgroundColor: "white",
-  },
-  addTaskButton: {},
-  taskListSection: {
-    flex: 5,
-    backgroundColor: "green",
-  },
+
   taskOverviewTitle: {
     fontSize: 22,
     fontWeight: "bold",
   },
-  taskItemStyleView: {
-    margin: 5,
-    padding: 10,
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: "black",
-    backgroundColor: "white",
-    // alignItems: "center",
-  },
-  taskItemStyleText: {
-    margin: 10,
-    padding: 10,
-    borderWidth: 2,
-    borderRadius: 10,
-    borderColor: "black",
-    backgroundColor: "yellow",
-    // alignItems: "center",
+  taskListSection: {
+    flex: 5,
+    backgroundColor: "green",
   },
 });
