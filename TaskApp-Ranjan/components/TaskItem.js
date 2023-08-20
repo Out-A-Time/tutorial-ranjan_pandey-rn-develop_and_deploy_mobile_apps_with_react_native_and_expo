@@ -1,13 +1,15 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
 
 export default function TaskItem(props) {
   return (
-    <View style={styles.taskItemStyleView}>
-      <Text style={styles.taskItemStyleText}>
-        {props.index}: {props.item.text}
-      </Text>
-    </View>
+    <Pressable onPress={props.onDeleteTask}>
+      <View style={styles.taskItemStyleView}>
+        <Text style={styles.taskItemStyleText}>
+          {props.index}: {props.item.text}
+        </Text>
+      </View>
+    </Pressable>
   );
 }
 
