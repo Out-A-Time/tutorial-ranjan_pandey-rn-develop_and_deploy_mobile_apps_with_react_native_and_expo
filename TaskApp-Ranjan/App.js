@@ -17,7 +17,7 @@ export default function App() {
   }
 
   function deleteTask() {
-    console.log("delete called");
+    console.log("delete called test test");
   }
   return (
     <View style={styles.mainContainer}>
